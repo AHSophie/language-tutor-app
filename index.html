@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script>
+      (function () {
+        try {
+          var originalFetch = window.fetch;
+          var currentFetch = originalFetch;
+
+          var ensureWritableFetch = function (target) {
+            if (!target) return;
+            try {
+              var desc = Object.getOwnPropertyDescriptor(target, 'fetch');
+              if (!desc || !desc.set) {
+                Object.defineProperty(target, 'fetch', {
+                  get: function () {
+                    return currentFetch;
+                  },
+                  set: function (val) {
+                    currentFetch = val;
+                  },
+                  configurable: true,
+                  enumerable: true,
+                });
+              }
+            } catch (err) {}
+          };
+
+          ensureWritableFetch(window);
+          if (typeof Window !== 'undefined' && Window.prototype) {
+            ensureWritableFetch(Window.prototype);
+          }
+          if (typeof globalThis !== 'undefined' && globalThis !== window) {
+            ensureWritableFetch(globalThis);
+          }
+
+          window.addEventListener(
+            'error',
+            function (event) {
+              if (
+                event &&
+                event.message &&
+                event.message.indexOf('fetch') !== -1 &&
+                event.message.indexOf('only a getter') !== -1
+              ) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+            },
+            true
+          );
+        } catch (e) {}
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spanish Pronunciation Practice</title>
+    <meta name="description" content="Practice your Spanish pronunciation with real-time speech recognition, instant feedback, audio replay, and scoring." />
+    <meta property="og:title" content="Spanish Pronunciation Practice" />
+    <meta property="og:description" content="Practice your Spanish pronunciation with real-time speech recognition, instant feedback, audio replay, and scoring." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

@@ -1,0 +1,10 @@
+{
+  "name": "Spanish Pronunciation Practice",
+  "description": "Practice your Spanish pronunciation with real-time speech recognition, instant feedback, audio replay, and scoring.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
